@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Started — The Big A## Calendar (concept)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Abel&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#2472c7; --deep:#1c5a9b; --navy:#023047;
+    --orange:#ffa400; --ink:#2f2f3d; --paper:#fff; --mist:#f3f6fa; --offwhite:#f9f5f1;
+    --line:rgba(0,0,0,.1);
+    --red:#e24b4a; --green:#5b9a1e; --yellow:#f2c500; --org:#ef9f27; --purple:#7f77dd;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:'Abel',sans-serif;color:var(--ink);background:var(--paper);font-size:19px;line-height:1.65;}
+  h1,h2,h3,.disp{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;line-height:1.02;letter-spacing:.01em;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 26px;}
+  a{color:var(--blue);}
+  .kicker{font-family:'Oswald';font-weight:600;text-transform:uppercase;letter-spacing:.14em;font-size:14px;color:var(--blue);}
+  .btn{display:inline-block;font-family:'Oswald';font-weight:700;text-transform:uppercase;letter-spacing:.03em;text-decoration:none;padding:13px 26px;border-radius:4px;font-size:15px;}
+  .btn-orange{background:var(--orange);color:var(--navy);}
+  .btn-blue{background:var(--blue);color:var(--offwhite);}
+
+  .promo{background:var(--deep);color:#fff;font-family:'Oswald';text-transform:uppercase;letter-spacing:.08em;font-size:13px;text-align:center;padding:8px;}
+  nav{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line);transition:transform .3s;}
+  nav.hide{transform:translateY(-100%);}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;}
+  .logo{font-family:'Oswald';font-weight:700;text-transform:uppercase;color:var(--blue);font-size:20px;letter-spacing:.01em;}
+  .navlinks{display:flex;gap:22px;font-family:'Oswald';font-weight:600;text-transform:uppercase;font-size:13px;letter-spacing:.03em;}
+  .navlinks a{text-decoration:none;color:var(--blue);}
+  @media(max-width:860px){.navlinks{display:none;}}
+
+  .hero{background:var(--blue);color:#fff;text-align:center;padding:74px 0 84px;}
+  .hero h1{font-size:clamp(38px,7vw,78px);color:#fff;}
+  .hero p{font-family:'Abel';font-size:clamp(18px,2.3vw,23px);max-width:620px;margin:18px auto 26px;opacity:.96;}
+
+  section{padding:70px 0;}
+  section.mist{background:var(--mist);}
+  section.blue{background:var(--blue);color:#fff;}
+  .head{max-width:760px;margin:0 auto 42px;text-align:center;}
+  .head h2{font-size:clamp(30px,5vw,50px);margin:8px 0 0;color:var(--navy);}
+  .blue .head h2,.blue .head{color:#fff;}
+  .head p{font-size:19px;opacity:.85;margin:14px 0 0;}
+
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:46px;align-items:center;margin:0 auto;}
+  .row+.row{margin-top:54px;}
+  .row.flip .media{order:2;}
+  @media(max-width:860px){.row{grid-template-columns:1fr;gap:24px;}.row.flip .media{order:0;}}
+  .media{position:relative;overflow:hidden;aspect-ratio:4/3;background:var(--mist);border:1px solid var(--line);border-radius:8px;}
+  .media::after{content:attr(data-label);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:14px;color:#9aa6b6;font-family:'Oswald';text-transform:uppercase;letter-spacing:.08em;font-size:13px;}
+  .media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;}
+  .row h3{font-size:30px;color:var(--navy);margin:0 0 10px;}
+  .num{font-family:'Oswald';font-weight:700;text-transform:uppercase;color:var(--blue);font-size:18px;letter-spacing:.06em;}
+  .row p{margin:0 0 12px;}
+  .more{display:inline-block;margin-top:8px;}
+
+  ul.check{list-style:none;padding:0;margin:6px 0 0;}
+  ul.check li{padding:9px 0 9px 32px;position:relative;border-bottom:1px solid var(--line);}
+  ul.check li:before{content:"";position:absolute;left:0;top:13px;width:17px;height:17px;border:2px solid var(--blue);border-radius:4px;}
+
+  .themes{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media(max-width:860px){.themes{grid-template-columns:1fr;}}
+  .theme{border:1px solid var(--line);border-radius:8px;padding:22px;background:#fff;}
+  .theme.rec{border:2px solid var(--blue);}
+  .theme h4{font-family:'Oswald';font-weight:700;text-transform:uppercase;font-size:19px;margin:0 0 2px;color:var(--navy);}
+  .theme .sub{font-size:15px;color:#7a818d;margin:0 0 14px;}
+  .badge{display:inline-block;font-family:'Oswald';font-weight:700;text-transform:uppercase;font-size:11px;letter-spacing:.05em;color:var(--navy);background:var(--orange);padding:3px 9px;border-radius:3px;margin-bottom:10px;}
+  .swatch{display:flex;align-items:center;gap:11px;padding:6px 0;}
+  .dot{width:18px;height:18px;border-radius:5px;flex:none;}
+
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media(max-width:860px){.cards3{grid-template-columns:1fr;}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:24px;}
+  .card h3{font-size:24px;color:var(--navy);margin:0 0 8px;}
+
+  .formula{font-family:'Oswald';font-weight:700;text-transform:uppercase;text-align:center;font-size:clamp(24px,4.4vw,44px);color:#fff;line-height:1.15;}
+  .formula .y{color:var(--orange);}
+
+  .team{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:8px;}
+  @media(max-width:860px){.team{grid-template-columns:repeat(2,1fr);}}
+  .member{border:1px solid var(--line);border-radius:8px;overflow:hidden;text-align:center;}
+  .member .ph{position:relative;overflow:hidden;aspect-ratio:1;background:var(--mist);display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px;}
+  .member .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .member .nm{position:relative;z-index:1;}
+  .member .nm{font-family:'Oswald';font-weight:700;text-transform:uppercase;color:#fff;background:var(--orange);padding:3px 12px;border-radius:4px;}
+  .member .body{padding:14px;font-size:15px;}
+  .member .lbl{font-family:'Oswald';font-weight:600;text-transform:uppercase;font-size:12px;letter-spacing:.04em;color:var(--blue);margin-top:8px;}
+  .note{text-align:center;font-size:14px;color:#7a818d;margin-top:14px;}
+
+  .badges{display:flex;gap:64px;justify-content:center;flex-wrap:wrap;}
+  .badge-item{display:flex;flex-direction:column;align-items:center;gap:12px;font-family:'Oswald';font-weight:700;text-transform:uppercase;font-size:15px;letter-spacing:.03em;color:var(--navy);text-align:center;max-width:200px;}
+  .badge-item svg{display:block;}
+  .badge-item img{height:52px;width:auto;display:block;}
+  footer{background:var(--deep);color:#fff;padding:56px 0;text-align:center;}
+  footer .disp{font-size:30px;}
+  footer p{max-width:600px;margin:10px auto 0;opacity:.92;}
+  .concept{font-size:13px;opacity:.55;margin-top:24px;}
+  .center{text-align:center;}.mt{margin-top:28px;}
+</style>
+</head>
+<body>
+
+<div class="promo">Shop Calendars &amp; Planners That Start In July!</div>
+<nav id="nav">
+  <div class="wrap">
+    <div class="logo">The Big A## Calendar</div>
+    <div class="navlinks">
+      <a href="#hang">Set up</a><a href="#colors">Color it</a><a href="#plan">Your 1-6-4</a>
+      <a href="#keep">Keep going</a><a href="#closeout">Close out</a>
+    </div>
+    <a class="btn btn-blue" href="https://thebigasscalendar.com/collections/the-big-a-calendar" style="padding:8px 16px;font-size:13px;">Shop</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker" style="color:#fff;opacity:.85;">How to live bigger</div>
+    <h1>Let's set up your<br>big a## year</h1>
+    <p>You've got the calendar. This is the full system Jesse runs his year on — set yours up in a few steps.</p>
+    <a class="btn btn-orange" href="#hang">Start setting up</a>
+  </div>
+</header>
+
+<section id="hang">
+  <div class="wrap">
+    <div class="row">
+      <div class="media" data-label="add images/calendar-wall.jpg"><img src="images/calendar-wall.jpg" alt="Big A## Calendar on a wall" onerror="this.remove()"></div>
+      <div>
+        <div class="num">Step 1</div>
+        <h3>Hang it where you'll see it</h3>
+        <p>The whole point is seeing your entire year at a glance — so put it somewhere you walk past every day. The kitchen, the office, behind your desk. Out of sight is out of mind; on the wall, it runs your year.</p>
+        <a class="more" href="https://thebigasscalendar.com/collections/accessories">Calendar frames &amp; mounts →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="colors" class="mist">
+  <div class="head">
+    <div class="num">Step 2</div>
+    <h2>Color your year</h2>
+    <p>Your calendar comes with 5 sticker colors. Don't overthink which color means what — just decide your categories once and start. Steal one of these:</p>
+  </div>
+  <div class="wrap themes">
+    <div class="theme rec">
+      <span class="badge">Easiest Start</span>
+      <h4>Five Buckets</h4><p class="sub">One per sticker color. Hardest to mess up.</p>
+      <div class="swatch"><span class="dot" style="background:#5b9a1e"></span>Family</div>
+      <div class="swatch"><span class="dot" style="background:#e24b4a"></span>Fitness &amp; Health</div>
+      <div class="swatch"><span class="dot" style="background:#7f77dd"></span>Work &amp; Money</div>
+      <div class="swatch"><span class="dot" style="background:#ef9f27"></span>Fun &amp; Adventure</div>
+      <div class="swatch"><span class="dot" style="background:#f2c500"></span>Misogi &amp; Milestones</div>
+    </div>
+    <div class="theme">
+      <h4>The Itzler</h4><p class="sub">Run It Like Jesse.</p>
+      <div class="swatch"><span class="dot" style="background:#7f77dd"></span>Work &amp; Speeches</div>
+      <div class="swatch"><span class="dot" style="background:#5b9a1e"></span>Races &amp; Adventures</div>
+      <div class="swatch"><span class="dot" style="background:#ef9f27"></span>Holidays &amp; Trips</div>
+      <div class="swatch"><span class="dot" style="background:#f2c500"></span>Birthdays</div>
+      <div class="swatch"><span class="dot" style="background:#e24b4a"></span>Misogi &amp; Milestones</div>
+    </div>
+    <div class="theme">
+      <h4>By Person</h4><p class="sub">For Families.</p>
+      <div class="swatch"><span class="dot" style="background:#5b9a1e"></span>Mom</div>
+      <div class="swatch"><span class="dot" style="background:#7f77dd"></span>Dad</div>
+      <div class="swatch"><span class="dot" style="background:#e24b4a"></span>Kid 1</div>
+      <div class="swatch"><span class="dot" style="background:#ef9f27"></span>Kid 2</div>
+      <div class="swatch"><span class="dot" style="background:#f2c500"></span>Kid 3 / Family</div>
+    </div>
+  </div>
+  <p class="center mt" style="max-width:620px;margin-left:auto;margin-right:auto;">Give your Misogi its own color or a star sticker so the one BIG thing never blends in with the 300 small ones. <a href="https://thebigasscalendar.com/collections/all-stickers">More sticker packs →</a></p>
+</section>
+
+<section id="plan">
+  <div class="head">
+    <div class="num">Step 3</div>
+    <h2>Fill it in: your 1-6-4</h2>
+    <p>Put the big rocks down first. Work always fills in around them — but only if you protect the good stuff up front.</p>
+  </div>
+  <div class="wrap">
+    <div class="row">
+      <div class="media" data-label="add images/misogi.jpg"><img src="images/misogi.jpg" alt="Mountain summit adventure" onerror="this.remove()"></div>
+      <div>
+        <h3>1 · Misogi</h3>
+        <p>A year-defining event. Choose one challenging goal that sets the tone for the year. Go BIG! A physical challenge, a trip, a business goal, something on your bucket list.</p>
+        <p>Stuck on yours? It doesn't have to be a race — write a book, learn piano, hit a number in your business. Pick something that scares you a little. Then whatever you're thinking, double it.</p>
+      </div>
+    </div>
+    <div class="row flip">
+      <div class="media" data-label="add images/adventures.jpg"><img src="images/adventures.jpg" alt="Camping mini adventure" onerror="this.remove()"></div>
+      <div>
+        <h3>6 · Mini adventures</h3>
+        <p>We call it Kevin's Rule: every other month, do something out of your routine — a hike, a polar plunge, a cooking class, a weekend trip. Six a year you wouldn't have done otherwise. In 30 years, that's 180 new experiences!</p>
+        <p>It doesn't take money: a polar plunge is a subway token; Mount Washington was "$18 to park."</p>
+        <a class="btn btn-blue mt" href="https://thebigasscalendar.com/blogs/the-big-a-bulletin/99-adventures-for-under-99">99 Adventure Ideas under $99</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="media" data-label="add images/habits.jpg"><img src="images/habits.jpg" alt="Water bottle and sneakers" onerror="this.remove()"></div>
+      <div>
+        <h3>4 · Winning habits</h3>
+        <p>It takes about 90 days to lock in a habit, so add just one each quarter and watch them compound. Write it down, check it off daily.</p>
+        <p>Need ideas? Try the <strong>3 C's</strong> — compliment, congratulate, or console someone every day by text, email, or call. Or 100 oz of water, a 10-minute meditation, 10k steps.</p>
+        <a class="btn btn-blue mt" href="https://thebigasscalendar.com/blogs/the-big-a-bulletin/50-daily-winning-habit-ideas">50 Winning Habit Ideas</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="keep" class="mist">
+  <div class="head">
+    <div class="num">Step 4</div>
+    <h2>Keep it going</h2>
+    <p>No rigid daily script — just enough rhythm to stay on offense.</p>
+  </div>
+  <div class="wrap cards3">
+    <div class="card">
+      <h3>Plan the week on Sunday</h3>
+      <p>Sunday night, pull the week onto paper — a view you can see at a glance and move around. This is where the planner sits next to the calendar.</p>
+      <a class="more" href="https://thebigasscalendar.com/products/the-big-a-planner">The Big A## Planner →</a>
+    </div>
+    <div class="card">
+      <h3>Take your vitamins</h3>
+      <p>List the 10 things that make a day good — a run, a sauna, a walk with your partner, time with the kids. You can't do all 10, so take two or three a day.</p>
+    </div>
+    <div class="card">
+      <h3>Three hours for you</h3>
+      <p>Those vitamins, added up — cumulative, not one block. 20 minutes here, a walk there. You don't have to be rich to be time rich, just organized enough to prioritize yourself.</p>
+    </div>
+  </div>
+</section>
+
+<section id="closeout">
+  <div class="head">
+    <div class="num">When December comes</div>
+    <h2>Close out your year</h2>
+    <p>Every business closes its books and runs a review. Do it for your life — a couple of hours so you start the new year light, not playing catch-up.</p>
+  </div>
+  <div class="wrap cards3">
+    <div class="card">
+      <h3>Get light</h3>
+      <ul class="check">
+        <li>Closet — 50/50? Donate it</li>
+        <li>Desk — clear the clutter</li>
+        <li>Email — respond, file, delete to zero</li>
+        <li>Unsubscribe + dead apps</li>
+        <li>Car, files, bills — current</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>The blender test</h3>
+      <p>Drop every bucket of your life in a blender — health, finances, relationships, work, where you live, fun — and rate the whole thing 1–10. The two or three that drag the number down? Those are your real fixes for next year. Not twenty resolutions.</p>
+    </div>
+    <div class="card">
+      <h3>Write your thank-you notes</h3>
+      <p>Close the year by thanking 20–30 people who showed up for you. Everybody reads their mail — it's an ink stain in the brain.</p>
+      <a class="more" href="https://thebigasscalendar.com/collections/big-a-stationery">Thank You cards →</a>
+    </div>
+  </div>
+</section>
+
+<section class="blue">
+  <div class="wrap">
+    <div class="formula">1 Misogi <span class="y">+</span> 6 Kevin's Rules <span class="y">+</span> 4 Winning Habits</div>
+    <p class="center mt" style="font-size:21px;max-width:660px;margin-left:auto;margin-right:auto;">Do these three things and you won't just have an incredible year — you'll build an unforgettable LIFE. Keep it up and that's ~50 year-defining Misogis and 300 mini adventures, all on one wall.</p>
+    <p class="center" style="font-style:italic;opacity:.9;max-width:600px;margin:18px auto 0;">"At the end of the year, roll it up and keep it. In 20 years you show your kids — this is what we did." — Jesse Itzler</p>
+    <div class="center mt"><a class="btn btn-orange" href="https://thebigasscalendar.com/collections/the-big-a-calendar">Get Started</a></div>
+  </div>
+</section>
+
+<section>
+  <div class="head">
+    <div class="kicker">Walking the walk</div>
+    <h2>Meet the team</h2>
+    <p>The people behind the calendar run the same system. Here's this year's 1-6-4 for a few of them.</p>
+  </div>
+  <div class="wrap team">
+    <div class="member"><div class="ph"><img src="images/team-jesse.jpg" alt="Jesse" onerror="this.remove()"><span class="nm">Jesse</span></div><div class="body"><div class="lbl">Misogi</div>Everesting<div class="lbl">Daily Winning Habit</div>100 oz water<div class="lbl">Next New Experience</div>Finland saunas</div></div>
+    <div class="member"><div class="ph"><img src="images/team-taylor.jpg" alt="Taylor" onerror="this.remove()"></div><div class="body"><div class="lbl">Misogi</div>Austrian Alps<div class="lbl">Daily Winning Habit</div>Drink 3L water<div class="lbl">Next New Experience</div>Still deciding!</div></div>
+    <div class="member"><div class="ph"><img src="images/team-janelle.jpg" alt="Janelle" onerror="this.remove()"></div><div class="body"><div class="lbl">Misogi</div>1,460 miles<div class="lbl">Daily Winning Habit</div>Plan tomorrow, tonight<div class="lbl">Next New Experience</div>Hot yoga retreat</div></div>
+    <div class="member"><div class="ph"><img src="images/team-alex.jpg" alt="Alex" onerror="this.remove()"></div><div class="body"><div class="lbl">Misogi</div>First baby girl<div class="lbl">Daily Winning Habit</div>20-min sauna<div class="lbl">Next New Experience</div>Breathwork retreat</div></div>
+  </div>
+</section>
+
+<section class="mist">
+  <div class="wrap"><div class="badges">
+    <div class="badge-item"><img src="images/BigA_Icons-White_USA.svg" alt="Made in the USA" onerror="this.remove()"><span>Made in the USA</span></div>
+    <div class="badge-item"><img src="images/sustainabily-sourced.svg" alt="Sustainably Sourced" onerror="this.remove()"><span>Sustainably Sourced</span></div>
+    <div class="badge-item"><img src="images/guarantee-return.svg" alt="Order Guarantee + Easy Returns" onerror="this.remove()"><span>Order Guarantee + Easy Returns</span></div>
+  </div></div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="disp">Now go have a big a## year.</div>
+    <p>Hang it where you'll see it, color it in, and fill it with the stuff you actually want to remember.</p>
+    <p class="concept">Unofficial concept built by a Big A## Calendar user — designed as the "Getting Started" guide a new owner could land on (e.g. from the product QR). Quotes from Jesse's public books, podcasts &amp; videos. Not affiliated with The Big A## Calendar Co.</p>
+  </div>
+</footer>
+
+<script>
+  var nav=document.getElementById('nav'),last=0;
+  window.addEventListener('scroll',function(){
+    var y=window.pageYOffset;
+    if(y>last&&y>140){nav.classList.add('hide');}else{nav.classList.remove('hide');}
+    last=y;
+  });
+</script>
+</body>
+</html>
